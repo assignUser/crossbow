@@ -1,0 +1,626 @@
+!Job
+target: !Target
+  head: 59cb2d40773557fd51260fc8e55be7e78b80b0ca
+  email: jkeane@gmail.com
+  branch: nic/ARROW-12909-build
+  remote: https://github.com/thisisnic/arrow.git
+  version: 3.1.0.dev948
+  no_rc_version: 3.1.0.dev948
+  no_rc_semver_version: 3.1.0-dev948
+tasks:
+  test-r-rhub-ubuntu-gcc-release-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+    branch: build-337-azure-test-r-rhub-ubuntu-gcc-release-latest
+    commit: a160233965428c5a1a5be6df553c0323530fa0ae
+  test-r-version-compatibility: !Task
+    ci: github
+    template: r/github.linux.version.compatibility.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-test-r-version-compatibility
+    commit: dd9cedf2537da797c40c2b7ce228ecb1b7229f2c
+  conda-win-vs2017-py36-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.6.____cpython
+      r_config: win_64_r_base4.0
+    branch: build-337-azure-conda-win-vs2017-py36-r40
+    commit: 895e1bcb32910ee2d613d5be4f719e3aebe59383
+  verify-rc-source-macos-rust: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_RUST: 1
+      artifact: source
+
+
+
+    branch: build-337-github-verify-rc-source-macos-rust
+    commit: 15d8a6bf7289bfc7c11e674bfc4665c415cdb86f
+  test-r-minimal-build: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      arrow_dataset: OFF
+      arrow_parquet: OFF
+      arrow_s3: OFF
+      arrow_with_re2: OFF
+      arrow_with_utf8proc: OFF
+      libarrow_minimal: 'TRUE'
+
+    branch: build-337-azure-test-r-minimal-build
+    commit: abff3d481e9395b63c34e0e0cd1c50a7d270b984
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-r-sanitizer
+
+    branch: build-337-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 57a32f8991566a96bd1526da0ef225760e64ab57
+  conda-linux-gcc-py37-cpu-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: linux_64_r_base4.1
+    branch: build-337-azure-conda-linux-gcc-py37-cpu-r41
+    commit: 52ddc25dc606753fb4b30206a4494db7ed0b557c
+  verify-rc-source-linux-csharp: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_CSHARP: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-csharp
+    commit: 5fe9bac3b661c71db5290cd378e5a1d8fa2bd4b0
+  verify-rc-source-linux-rust: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_RUST: 1
+      artifact: source
+
+
+
+    branch: build-337-github-verify-rc-source-linux-rust
+    commit: db87fb646465c3fd7fdbbf843c7e8022726d9b54
+  verify-rc-source-linux-python: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_PYTHON: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-python
+    commit: acf22444c8cf68f75aa62d4eec7b6aab9ebd4e41
+  verify-rc-source-macos-cpp: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_CPP: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-cpp
+    commit: de4364e58f974d14b7c8af4e2a7f9d6fccf145d0
+  test-debian-ruby: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: debian-ruby
+    branch: build-337-github-test-debian-ruby
+    commit: 71b19f97d52407ed9d92abec55182b1674b66aa1
+  verify-rc-source-linux-go: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_GO: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-go
+    commit: 1ae7ee0836c437030fdef0a4018c3cd76e39be8c
+  conda-linux-gcc-py36-cpu-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.6.____cpython
+      r_config: linux_64_r_base4.0
+    branch: build-337-azure-conda-linux-gcc-py36-cpu-r40
+    commit: a1cf3005ce6bb60d4b1e081fe46b4343ff71626b
+  verify-rc-source-linux-integration: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_INTEGRATION: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-integration
+    commit: bb4053281c2af9956cdaa817ad125333ce7a4557
+  conda-win-vs2017-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: win_64_r_base4.1
+    branch: build-337-azure-conda-win-vs2017-py37-r41
+    commit: 995954aa6ae8472b7d567d946a02001a2dd940cc
+  verify-rc-source-macos-java: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_JAVA: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-java
+    commit: 462c71f038334816556c32703fcd2d06d7162dd3
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: build-337-github-test-r-versions
+    commit: fb29392e202068d4bfaddcc0e43e1f51dfd1dce7
+  test-r-rocker-r-base-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+    branch: build-337-azure-test-r-rocker-r-base-latest
+    commit: ee175fbe62cbadbd3ad8e97799b8b8722c134144
+  test-r-rstudio-r-base-3.6-bionic: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-bionic
+    branch: build-337-azure-test-r-rstudio-r-base-3.6-bionic
+    commit: 369b0ba79e33c349726563fe6d782f9db72ad1f2
+  verify-rc-binaries-yum: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_YUM: 1
+      artifact: binaries
+    branch: build-337-github-verify-rc-binaries-yum
+    commit: 04255748a74a43cca0cbff1b209f48ef29d583d4
+  verify-rc-source-macos-ruby: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_RUBY: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-ruby
+    commit: 2e532e2c4c7b4a9f02daa4d74350c3aceffb0629
+  test-r-rstudio-r-base-3.6-opensuse15: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-opensuse15
+    branch: build-337-azure-test-r-rstudio-r-base-3.6-opensuse15
+    commit: 0e2f0488c3dd6bd9266d67e37c357cc65793bf53
+  verify-rc-binaries-binary: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_BINARY: 1
+      artifact: binaries
+    branch: build-337-github-verify-rc-binaries-binary
+    commit: 60e22b3ffe8cfef2d57a106d4ea71b348bc444e4
+  conda-osx-clang-py36-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.6.____cpython
+      r_config: osx_64_r_base4.0
+    branch: build-337-azure-conda-osx-clang-py36-r40
+    commit: 60cc202993f19e8040eb97ff1c365fd5290ec6cd
+  verify-rc-source-macos-python: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_PYTHON: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-python
+    commit: de6b5f7c5fbd956d814c4458ba49020eceebc0e0
+  test-ubuntu-18.04-cpp-release: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      flags: -e ARROW_BUILD_TYPE=release
+      image: ubuntu-cpp
+
+    branch: build-337-github-test-ubuntu-18.04-cpp-release
+    commit: e6f2708b443cb506234f782ebe2df5a55b16306f
+  verify-rc-wheels-macos: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+
+    branch: build-337-github-verify-rc-wheels-macos
+    commit: 3fd74c12eca0b3883ff463c8faf749f570bda602
+  test-r-install-local: !Task
+    ci: github
+    template: r/github.macos-linux.local.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-test-r-install-local
+    commit: 9d34e1158da8b3d96c4831e6a5367e81ebc676ab
+  verify-rc-source-macos-integration: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_INTEGRATION: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-integration
+    commit: 89029660c6ecb664413d33d6bab8a7631f906798
+  verify-rc-source-linux-js: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_JS: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-js
+    commit: 5567e450a34d1c02ae6fb4b8ee03a70ac7e4ca40
+  verify-rc-source-macos-csharp: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_CSHARP: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-csharp
+    commit: 5e7121f7ea62096dca7207d8d63fc248531854c2
+  homebrew-r-autobrew: !Task
+    ci: github
+    template: r/github.macos.autobrew.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-homebrew-r-autobrew
+    commit: 0c40c4d3e65af51b2aa7252b980b0699d7203be8
+  test-r-linux-as-cran: !Task
+    ci: github
+    template: r/github.linux.cran.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_image }}
+
+    branch: build-337-github-test-r-linux-as-cran
+    commit: 8144b3fbff0e82076cc560a28d6061086e0c65cb
+  verify-rc-source-linux-java: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_JAVA: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-java
+    commit: 4345c48b93e3af2bdc951c9c72aa55f88e3c188f
+  test-r-without-arrow: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+      libarrow_download: 'FALSE'
+      libarrow_build: 'FALSE'
+      with_arrow: 'FALSE'
+      not_cran: 'FALSE'
+
+    branch: build-337-azure-test-r-without-arrow
+    commit: 7e3afe59de347a05938724afd48de17758221183
+  verify-rc-source-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate.bat
+
+    branch: build-337-github-verify-rc-source-windows
+    commit: 438768245dbade56f94bcaa21936f31ac943e5f0
+  conda-osx-clang-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-3.1.0.dev948-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.7.____cpython
+      r_config: osx_64_r_base4.1
+    branch: build-337-azure-conda-osx-clang-py37-r41
+    commit: 76d032d8c5e3149a6af2cab28f650dc9494d82d7
+  revdep-r-check: !Task
+    ci: github
+    template: r/github.linux.revdepcheck.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-revdep-r-check
+    commit: 8d3a4e7e84faa64c36e631569849351199ed6745
+  test-ubuntu-ruby: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: ubuntu-ruby
+
+    branch: build-337-github-test-ubuntu-ruby
+    commit: c8d89a6abcaaa14f8db9410d3482b7f99481fe65
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-r-valgrind
+
+    branch: build-337-azure-test-r-linux-valgrind
+    commit: 636564533ec9e1f35430be5a406e8820021eeb85
+  test-r-rstudio-r-base-3.6-centos7-devtoolset-8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-centos7
+      devtoolset_version: 8
+
+    branch: build-337-azure-test-r-rstudio-r-base-3.6-centos7-devtoolset-8
+    commit: 587c87d656efc9034b9df328fb96e5d4040522b2
+  verify-rc-source-linux-ruby: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_RUBY: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-ruby
+    commit: 9b34017b6361165fb7eb2142d6e0f5730b768e63
+  test-r-rstudio-r-base-3.6-centos8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-centos8
+    branch: build-337-azure-test-r-rstudio-r-base-3.6-centos8
+    commit: e1d0e084c7dfc9c9c20153c0a1d0d29500f98108
+  test-r-rtools-35: !Task
+    ci: github
+    template: r/github.windows.rtools35.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-test-r-rtools-35
+    commit: 09268087d8f3650fb91b38ae18f13bcad4f786ef
+  verify-rc-source-macos-js: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_JS: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-js
+    commit: 81de5f8cd62b425b66fbbb7741d1dc17a18b8a5c
+  verify-rc-binaries-apt: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+        TEST_APT: 1
+      artifact: binaries
+
+
+    branch: build-337-github-verify-rc-binaries-apt
+    commit: 113b59c3aa123218c6fd2e375b5aa30aa7a8ef72
+  verify-rc-source-linux-cpp: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_CPP: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-linux-cpp
+    commit: 99130e5fe937062ee6657f8b2d8cea6dcf18cf90
+  test-r-devdocs: !Task
+    ci: github
+    template: r/github.devdocs.yml
+    artifacts: []
+    params: {}
+    branch: build-337-github-test-r-devdocs
+    commit: 3d593799c82f1d43b48bb576db77cc23a18202c0
+  test-r-rstudio-r-base-3.6-opensuse42: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-opensuse42
+
+    branch: build-337-azure-test-r-rstudio-r-base-3.6-opensuse42
+    commit: 8fa3a1c13297cf33e6b3d0d80fa4906298aece12
+  verify-rc-wheels-windows: !Task
+    ci: github
+    template: verify-rc/github.win.yml
+    artifacts: []
+    params:
+      script: verify-release-candidate-wheels.bat
+
+
+    branch: build-337-github-verify-rc-wheels-windows
+    commit: 7499b2196546f0ce6e63bf1020802066e4959db4
+  verify-rc-source-macos-go: !Task
+    ci: github
+    template: verify-rc/github.macos.yml
+    artifacts: []
+    params:
+      env:
+        INSTALL_NODE: 0
+        TEST_DEFAULT: 0
+        TEST_GO: 1
+      artifact: source
+
+
+    branch: build-337-github-verify-rc-source-macos-go
+    commit: 9ff20abbad216904ff1fedd47d49084c2677ffbc
+  verify-rc-wheels-linux: !Task
+    ci: github
+    template: verify-rc/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+
+    branch: build-337-github-verify-rc-wheels-linux
+    commit: a53458d7ae91351df01b42c34219d6752d55efc0
+params: {}
+branch: build-337
