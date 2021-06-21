@@ -1,0 +1,33 @@
+!Job
+target: !Target
+  head: e1b845d7e69662fb584aedeb9e619261096f8b5c
+  email: unknown
+  branch: ARROW-13127-valgrind-c-export
+  remote: https://github.com/jonkeane/arrow.git
+  version: 3.1.0.dev1045
+  no_rc_version: 3.1.0.dev1045
+  no_rc_semver_version: 3.1.0-dev1045
+tasks:
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_R_DEV: 'TRUE'
+        UBUNTU: 18.04
+      run: ubuntu-r-valgrind
+
+    branch: actions-505-azure-test-r-linux-valgrind
+    commit: e8f0622d3c3f45186a7c0fcb270f1c0d2801bf08
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: actions-505-github-test-r-versions
+    commit: 89733d41974e29b3ed4d3a4271e5d4da23a14b0c
+params: {}
+branch: actions-505
