@@ -1,0 +1,64 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# NOTE: must set "Crossbow" as name to have the badge links working in the
+# github comment reports!
+name: Crossbow
+on:
+  push:
+    branches:
+      - "*-github-*"
+
+
+env:
+  ARROW_S3: ON
+  MACOSX_DEPLOYMENT_TARGET: 10.13
+  MB_PYTHON_VERSION: 3.6
+  PLAT: x86_64
+  PYARROW_BUILD_VERBOSE: 1
+  PYARROW_VERSION: 5.0.0.dev322
+  PYTHON_VERSION: 3.6
+  SETUPTOOLS_SCM_PRETEND_VERSION: 5.0.0.dev322
+  VCPKG_DEFAULT_TRIPLET: x64-osx-static-release
+  VCPKG_FEATURE_FLAGS: "-manifests"
+  VCPKG_OVERLAY_TRIPLETS: ${{ github.workspace }}/arrow/ci/vcpkg
+  SDKROOT: /opt/SDKs/MacOSX10.13.sdk
+
+jobs:
+  build:
+    name: Build wheel for OS X
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Arrow
+        run: |
+          git clone --no-checkout https://github.com/kszucs/arrow arrow
+          git -C arrow config core.symlinks true
+          git -C arrow fetch -t https://github.com/kszucs/arrow macos-sdkroot
+          git -C arrow checkout FETCH_HEAD
+          git -C arrow submodule update --init --recursive
+      - name: Fetch Submodules and Tags
+        shell: bash
+        run: cd arrow && ci/scripts/util_checkout.sh
+
+
+      - run: pwd
+      - run: ls
+      - run: arrow/ci/scripts/install_osx_sdk.sh ${MACOSX_DEPLOYMENT_TARGET} ${SDKROOT}
+
+      - run: xcrun --show-sdk-version
+      - run: xcrun --show-sdk-path
+      - run: xcodebuild -showsdks
