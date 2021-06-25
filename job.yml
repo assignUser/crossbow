@@ -1,0 +1,266 @@
+!Job
+target: !Target
+  head: a0f18640e86ccd4f0ef4a55ece186dc614bc7559
+  email: unknown
+  branch: ARROW-13113_RTasks
+  remote: https://github.com/romainfrancois/arrow.git
+  version: 5.0.0.dev329
+  no_rc_version: 5.0.0.dev329
+  no_rc_semver_version: 5.0.0-dev329
+tasks:
+  test-r-rocker-r-base-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+    branch: actions-511-azure-test-r-rocker-r-base-latest
+    commit: 94ce26db001781bf8fc14779a8cb316790428f14
+  test-r-minimal-build: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      arrow_dataset: OFF
+      arrow_parquet: OFF
+      arrow_s3: OFF
+      arrow_with_re2: OFF
+      arrow_with_utf8proc: OFF
+      libarrow_minimal: 'TRUE'
+
+    branch: actions-511-azure-test-r-minimal-build
+    commit: 89b9344d0e9b6cec70c477ed0953b166e974bad0
+  conda-linux-gcc-py36-cpu-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.6.____cpython
+      r_config: linux_64_r_base4.0
+    branch: actions-511-azure-conda-linux-gcc-py36-cpu-r40
+    commit: 4e08225e1cdfdb69d1e5aa7bd2537aac5aa904d4
+  conda-osx-clang-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.7.____cpython
+      r_config: osx_64_r_base4.1
+    branch: actions-511-azure-conda-osx-clang-py37-r41
+    commit: 270402e16d34a16667c2364e3275d36c77f0f997
+  test-r-rstudio-r-base-3.6-opensuse42: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-opensuse42
+
+    branch: actions-511-azure-test-r-rstudio-r-base-3.6-opensuse42
+    commit: a6bb38874828018ab44ef1cc3bbc5d4efc0a0c7d
+  test-r-linux-valgrind: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        ARROW_R_DEV: 'TRUE'
+        UBUNTU: 18.04
+      run: ubuntu-r-valgrind
+
+    branch: actions-511-azure-test-r-linux-valgrind
+    commit: 515b16baa04e8785ee7f53647fe6f70a84c1336d
+  test-r-install-local: !Task
+    ci: github
+    template: r/github.macos-linux.local.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-test-r-install-local
+    commit: 1e608a2c42379c42c1eb9e296f4d835aaaaa6ec1
+  test-r-without-arrow: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+      libarrow_download: 'FALSE'
+      libarrow_build: 'FALSE'
+      with_arrow: 'FALSE'
+      not_cran: 'FALSE'
+
+    branch: actions-511-azure-test-r-without-arrow
+    commit: 906c75316addd24a3b437517eb2d26dff41ca041
+  test-r-devdocs: !Task
+    ci: github
+    template: r/github.devdocs.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-test-r-devdocs
+    commit: 9b80ba6fce793c96f12a9b0766f4e4016baf5bb9
+  test-r-rhub-ubuntu-gcc-release-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+    branch: actions-511-azure-test-r-rhub-ubuntu-gcc-release-latest
+    commit: ee40ba8d013aca8f5abee5c451a39760d67746ea
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: actions-511-github-test-r-versions
+    commit: 45db4a2463285d051cc7085e506f8d170eebfb6c
+  conda-win-vs2017-py36-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.6.____cpython
+      r_config: win_64_r_base4.0
+    branch: actions-511-azure-conda-win-vs2017-py36-r40
+    commit: aa61ef4d10d6c5661920685e2dd1d0f426edec4b
+  test-r-linux-rchk: !Task
+    ci: github
+    template: r/github.linux.rchk.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-test-r-linux-rchk
+    commit: a23cd884334acf25d9954f0371bbdebf7a92583a
+  test-r-version-compatibility: !Task
+    ci: github
+    template: r/github.linux.version.compatibility.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-test-r-version-compatibility
+    commit: ce02e02cbeaaa00aebd1ad66f1e5f7bc814b7d8f
+  test-r-rstudio-r-base-3.6-centos7-devtoolset-8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-centos7
+      devtoolset_version: 8
+
+    branch: actions-511-azure-test-r-rstudio-r-base-3.6-centos7-devtoolset-8
+    commit: 205e1c4b6e0e7fbd7955898a56eb6a34f17415e4
+  conda-linux-gcc-py37-cpu-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: linux_64_r_base4.1
+    branch: actions-511-azure-conda-linux-gcc-py37-cpu-r41
+    commit: 05095e3808bdd4d436bd3537fb2d1e84527193f1
+  conda-win-vs2017-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.win.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: win_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: win_64_r_base4.1
+    branch: actions-511-azure-conda-win-vs2017-py37-r41
+    commit: 71dd6022c335d1f8d67dd6cef5ae07a110eb25bb
+  test-r-linux-as-cran: !Task
+    ci: github
+    template: r/github.linux.cran.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_image }}
+
+    branch: actions-511-github-test-r-linux-as-cran
+    commit: 02cce25e1dd115d650c71493ef2fd12637b3cd49
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-r-sanitizer
+
+    branch: actions-511-azure-test-ubuntu-18.04-r-sanitizer
+    commit: 0d8338cde22a64b9fc6fc29624be001f4a76dbb2
+  test-r-rstudio-r-base-3.6-bionic: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-bionic
+    branch: actions-511-azure-test-r-rstudio-r-base-3.6-bionic
+    commit: 7f6ddfad1565039e1f83ca98517304259969e838
+  homebrew-r-autobrew: !Task
+    ci: github
+    template: r/github.macos.autobrew.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-homebrew-r-autobrew
+    commit: d84b07b44748b135dd4bb459a2ad99255fe691d8
+  conda-osx-clang-py36-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-5.0.0.dev329-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.6.____cpython
+      r_config: osx_64_r_base4.0
+    branch: actions-511-azure-conda-osx-clang-py36-r40
+    commit: 02b65b72153257ff77a8ad2c8d104935b1fd308d
+  test-r-rtools-35: !Task
+    ci: github
+    template: r/github.windows.rtools35.yml
+    artifacts: []
+    params: {}
+    branch: actions-511-github-test-r-rtools-35
+    commit: 0e04e9190491ab61d656266b85d9c189d4f477da
+  test-r-rstudio-r-base-3.6-centos8: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-centos8
+    branch: actions-511-azure-test-r-rstudio-r-base-3.6-centos8
+    commit: ae5f781412745d0335fda896c6a790c2d09237da
+  test-r-rstudio-r-base-3.6-opensuse15: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rstudio
+      r_image: r-base
+      r_tag: 3.6-opensuse15
+    branch: actions-511-azure-test-r-rstudio-r-base-3.6-opensuse15
+    commit: a21b4826bf799f4095282f6a774b1030cead11bb
+params: {}
+branch: actions-511
