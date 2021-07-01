@@ -1,0 +1,175 @@
+!Job
+target: !Target
+  head: 4932dd3544a5d19f3eaf6511fb3d2f88cd7a88c2
+  email: unknown
+  branch: ARROW-13199-r-ubuntu-21.04
+  remote: https://github.com/jonkeane/arrow.git
+  version: 5.0.0.dev364
+  no_rc_version: 5.0.0.dev364
+  no_rc_semver_version: 5.0.0-dev364
+tasks:
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+      image: ubuntu-r-static
+
+    branch: actions-553-github-test-r-ubuntu-21.04
+    commit: 428c419a6bd7b7515f441d5cdba6be365b52e4c3
+  test-ubuntu-20.04-cpp-thread-sanitizer: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        CLANG_TOOLS: 11
+        UBUNTU: 20.04
+      image: ubuntu-cpp-thread-sanitizer
+
+    branch: actions-553-github-test-ubuntu-20.04-cpp-thread-sanitizer
+    commit: db38dfc7874d063483a793cf6aea9324dd6bd078
+  test-ubuntu-18.04-cpp-static: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      flags: -e ARROW_BUILD_SHARED=OFF -e ARROW_BUILD_STATIC=ON -e ARROW_TEST_LINKAGE=static
+      image: ubuntu-cpp
+
+    branch: actions-553-github-test-ubuntu-18.04-cpp-static
+    commit: fbdc873fbee00070a4f34237cf0c089e771ce8c7
+  test-ubuntu-default-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      run: ubuntu-docs
+
+  ############################## vcpkg tests ##################################
+
+    branch: actions-553-azure-test-ubuntu-default-docs
+    commit: 2170bd5786f8f1fb60093ba7d9bb27539415ad52
+  test-ubuntu-18.04-python-3: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-python
+
+    branch: actions-553-azure-test-ubuntu-18.04-python-3
+    commit: 9fe0cf4115e3c5d995616d7e5382dfde0a76ebf7
+  test-ubuntu-18.04-cpp-release: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      flags: -e ARROW_BUILD_TYPE=release
+      image: ubuntu-cpp
+
+    branch: actions-553-github-test-ubuntu-18.04-cpp-release
+    commit: 854043d7cd1cb7777c3d1b3d7d5596790e82e0d7
+  test-ubuntu-20.04-cpp-14: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      flags: -e CMAKE_ARGS=-DCMAKE_CXX_STANDARD=14
+      image: ubuntu-cpp
+    branch: actions-553-github-test-ubuntu-20.04-cpp-14
+    commit: 1095cd1a0ac907a1578b6953f24cd1655bf90905
+  test-r-rhub-ubuntu-gcc-release-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+    branch: actions-553-azure-test-r-rhub-ubuntu-gcc-release-latest
+    commit: a077b5798fac782d2b2985cad28ca042a13ad4fb
+  test-ubuntu-20.04-cpp: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      image: ubuntu-cpp
+
+    branch: actions-553-github-test-ubuntu-20.04-cpp
+    commit: 7b6d6d5b88761c075d8b5b2e3584cfe381f06163
+  test-ubuntu-20.04-cpp-17: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 20.04
+      flags: -e CMAKE_ARGS=-DCMAKE_CXX_STANDARD=17
+      image: ubuntu-cpp
+
+    branch: actions-553-github-test-ubuntu-20.04-cpp-17
+    commit: eae544daa0345ff4eb908d8c7101ec21905c8772
+  test-ubuntu-18.04-cpp: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      image: ubuntu-cpp
+    branch: actions-553-github-test-ubuntu-18.04-cpp
+    commit: 04c543bad229c9c9fed682d421cf25fa45d618fb
+  test-ubuntu-ruby: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: ubuntu-ruby
+
+    branch: actions-553-github-test-ubuntu-ruby
+    commit: 18f84a2c0f4dbf21805231aa0ecdd0a0683889fb
+  test-ubuntu-c-glib: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      image: ubuntu-c-glib
+    branch: actions-553-github-test-ubuntu-c-glib
+    commit: 3408484df01e49d533326e50ba53751ac17de9f1
+  test-ubuntu-18.04-r-sanitizer: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 18.04
+      run: ubuntu-r-sanitizer
+
+    branch: actions-553-azure-test-ubuntu-18.04-r-sanitizer
+    commit: f1fb252b5d98a84b4dde2d199893ec754bd19aaa
+  test-ubuntu-20.10-docs: !Task
+    ci: azure
+    template: docker-tests/azure.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: '20.10'
+      run: ubuntu-docs
+
+    branch: actions-553-azure-test-ubuntu-20.10-docs
+    commit: f45604f9ab61b606f98d1dc43b5004cfd635fe6c
+params: {}
+branch: actions-553
