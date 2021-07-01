@@ -1,0 +1,41 @@
+!Job
+target: !Target
+  head: 973f4b0b038d1fd5655b325436e747565cceffa9
+  email: unknown
+  branch: ARROW-13199-r-ubuntu-21.04
+  remote: https://github.com/jonkeane/arrow.git
+  version: 5.0.0.dev360
+  no_rc_version: 5.0.0.dev360
+  no_rc_semver_version: 5.0.0-dev360
+tasks:
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        ARROW_HOME: ''
+      image: ubuntu-r-static
+
+    branch: actions-548-github-test-r-ubuntu-21.04
+    commit: d10885adcdb9e7b9809c7a8aaf6b5dedbaf189e2
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        GCC_VERSION: 11
+        ARROW_HOME: ''
+        ARROW_S3: OFF # S3 support is not buildable with gcc11
+      image: ubuntu-r-static
+
+
+    branch: actions-548-github-test-r-gcc-11
+    commit: 12bbab405b1d3c3eb865c04ed5d901fb79280b05
+params: {}
+branch: actions-548
