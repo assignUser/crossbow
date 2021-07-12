@@ -36,8 +36,9 @@ env:
   VCPKG_OVERLAY_TRIPLETS: ${{ github.workspace }}/arrow/ci/vcpkg
   VCPKG_ROOT: ${{ github.workspace }}/vcpkg
   VCPKG_VERSION: "2021.04.30"
-  CC: "ccache clang"
-  CXX: "ccache clang++"
+  CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
+  CC: "clang"
+  CXX: "clang++"
 
 jobs:
   build:
@@ -72,15 +73,7 @@ jobs:
       # - name: Install System Dependencies
       #   run: brew install bash bison coreutils ninja cmake
 
-      # - uses: actions/cache@v2
-      #   id: vcpkg-cache
-      #   with:
-      #     path: vcpkg
-      #     key: vcpkg-10.13-2021.04.30-arm64-${{ hashFiles('arrow/ci/vcpkg/**') }}-1
-
       - name: Install Vcpkg
-        # if: steps.vcpkg-cache.outputs.cache-hit != 'true'
-        # rm -rf $VCPKG_ROOT
         shell: bash
         run: arch -arm64 arrow/ci/scripts/install_vcpkg.sh $VCPKG_VERSION $VCPKG_ROOT
 
@@ -88,6 +81,7 @@ jobs:
         run: |
           arch -arm64 $VCPKG_ROOT/vcpkg install \
             abseil \
+            aws-sdk-cpp[config,cognito-identity,core,identity-management,s3,sts,transfer] \
             boost-filesystem \
             brotli \
             bzip2 \
@@ -108,9 +102,6 @@ jobs:
             utf8proc \
             zlib \
             zstd
-
-      # - name: Install AWS SDK C++
-      #   run: $VCPKG_ROOT/vcpkg install aws-sdk-cpp[config,cognito-identity,core,identity-management,s3,sts,transfer]
 
       # - name: Install Python 3.6
       #   shell: bash
