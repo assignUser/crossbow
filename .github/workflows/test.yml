@@ -34,8 +34,8 @@ env:
   VCPKG_OVERLAY_TRIPLETS: ${{ github.workspace }}/arrow/ci/vcpkg
   VCPKG_ROOT: ${{ github.workspace }}/vcpkg
   VCPKG_VERSION: "2021.04.30"
-  CC: "clang"
-  CXX: "clang++"
+  CC: "ccache clang"
+  CXX: "ccache clang++"
 
 jobs:
   build:
@@ -70,7 +70,7 @@ jobs:
         id: vcpkg-cache
         with:
           path: vcpkg
-          key: vcpkg-10.13-2021.04.30-arm64-${{ hashFiles('arrow/ci/vcpkg/**') }}
+          key: vcpkg-10.13-2021.04.30-arm64-${{ hashFiles('arrow/ci/vcpkg/**') }}-1
 
       - name: Install Vcpkg
         if: steps.vcpkg-cache.outputs.cache-hit != 'true'
@@ -79,30 +79,30 @@ jobs:
           rm -rf $VCPKG_ROOT
           arch -arm64 arrow/ci/scripts/install_vcpkg.sh $VCPKG_VERSION $VCPKG_ROOT
 
-      # - name: Install Packages
-      #   run: |
-      #     $VCPKG_ROOT/vcpkg install \
-      #       abseil \
-      #       boost-filesystem \
-      #       brotli \
-      #       bzip2 \
-      #       c-ares \
-      #       curl \
-      #       flatbuffers \
-      #       gflags \
-      #       glog \
-      #       grpc \
-      #       lz4 \
-      #       openssl \
-      #       orc \
-      #       protobuf \
-      #       rapidjson \
-      #       re2 \
-      #       snappy \
-      #       thrift \
-      #       utf8proc \
-      #       zlib \
-      #       zstd
+      - name: Install Packages
+        run: |
+          $VCPKG_ROOT/vcpkg install \
+            abseil \
+            boost-filesystem \
+            brotli \
+            bzip2 \
+            c-ares \
+            curl \
+            flatbuffers \
+            gflags \
+            glog \
+            grpc \
+            lz4 \
+            openssl \
+            orc \
+            protobuf \
+            rapidjson \
+            re2 \
+            snappy \
+            thrift \
+            utf8proc \
+            zlib \
+            zstd
 
       # - name: Install AWS SDK C++
       #   run: $VCPKG_ROOT/vcpkg install aws-sdk-cpp[config,cognito-identity,core,identity-management,s3,sts,transfer]
