@@ -31,14 +31,14 @@ env:
 #   PYARROW_VERSION: "5.0.0.dev372"
 #   PYTHON_VERSION: "3.6"
 #   PYTHON: "/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6"
+  CC: "clang"
+  CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
+  CXX: "clang++"
   VCPKG_DEFAULT_TRIPLET: arm64-osx-static-release
   VCPKG_FEATURE_FLAGS: "-manifests"
   VCPKG_OVERLAY_TRIPLETS: ${{ github.workspace }}/arrow/ci/vcpkg
   VCPKG_ROOT: ${{ github.workspace }}/vcpkg
   VCPKG_VERSION: "2021.04.30"
-  CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
-  CC: "clang"
-  CXX: "clang++"
 
 jobs:
   build:
@@ -55,6 +55,10 @@ jobs:
           xcrun --show-sdk-path
           xcrun --sdk macosx --show-sdk-path
 
+      - name: Add Brew's Bison to PATH
+        shell: bash
+        run: echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
+
       - name: Cleanup
         shell: bash
         run: rm -rf arrow vcpkg
@@ -69,9 +73,6 @@ jobs:
       - name: Fetch Submodules and Tags
         shell: bash
         run: cd arrow && ci/scripts/util_checkout.sh
-
-      # - name: Install System Dependencies
-      #   run: brew install bash bison coreutils ninja cmake
 
       - name: Install Vcpkg
         shell: bash
