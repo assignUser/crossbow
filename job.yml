@@ -1,0 +1,53 @@
+!Job
+target: !Target
+  head: 9a4d419a1d1730fdddf5fad9a3ddd39ee52f9467
+  email: unknown
+  branch: ARROW-13243-altrep-gate
+  remote: https://github.com/jonkeane/arrow.git
+  version: 5.0.0.dev403
+  no_rc_version: 5.0.0.dev403
+  no_rc_semver_version: 5.0.0-dev403
+tasks:
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: actions-582-github-test-r-versions
+    commit: d4e1823c4d08b16c9c76058ea89c6c4a93dd4b63
+  test-r-minimal-build: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      arrow_dataset: OFF
+      arrow_parquet: OFF
+      arrow_s3: OFF
+      arrow_with_re2: OFF
+      arrow_with_utf8proc: OFF
+      libarrow_minimal: 'TRUE'
+
+    branch: actions-582-azure-test-r-minimal-build
+    commit: e0b039bea13dd6d9e7d22171d7d90be15c473fe1
+  test-r-without-arrow: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: ubuntu-gcc-release
+      r_tag: latest
+      libarrow_download: 'FALSE'
+      libarrow_build: 'FALSE'
+      with_arrow: 'FALSE'
+      not_cran: 'FALSE'
+
+    branch: actions-582-azure-test-r-without-arrow
+    commit: f5d9027a34ad70118fa22ae001a03bee9245dd97
+params: {}
+branch: actions-582
