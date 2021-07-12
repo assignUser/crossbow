@@ -54,9 +54,15 @@ jobs:
           xcrun --show-sdk-path
           xcrun --sdk macosx --show-sdk-path
 
+      - name: Cleanup
+        shell: bash
+        run: |
+          rm -rf arrow
+          rm -rf vcpkg
+
       - name: Checkout Arrow
         run: |
-          git clone --no-checkout arrow || true
+          git clone --no-checkout arrow
           git -C arrow config core.symlinks true
           git -C arrow fetch -t https://github.com/kszucs/arrow m1
           git -C arrow checkout FETCH_HEAD
@@ -78,12 +84,11 @@ jobs:
         # if: steps.vcpkg-cache.outputs.cache-hit != 'true'
         # rm -rf $VCPKG_ROOT
         shell: bash
-        run: |
-          arch -arm64 arrow/ci/scripts/install_vcpkg.sh $VCPKG_VERSION $VCPKG_ROOT
+        run: arch -arm64 arrow/ci/scripts/install_vcpkg.sh $VCPKG_VERSION $VCPKG_ROOT
 
       - name: Install Packages
         run: |
-          $VCPKG_ROOT/vcpkg install \
+          arch -arm64 $VCPKG_ROOT/vcpkg install \
             abseil \
             boost-filesystem \
             brotli \
