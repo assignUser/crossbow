@@ -1,0 +1,54 @@
+!Job
+target: !Target
+  head: 0bb3aecb69cdfd5818de352452111c5ec8fd67fb
+  email: unknown
+  branch: verify-m1-cp38-arm64
+  remote: https://github.com/kszucs/arrow.git
+  version: 5.0.0.dev521
+  no_rc_version: 5.0.0.dev521
+  no_rc_semver_version: 5.0.0-dev521
+tasks:
+  verify-rc-wheels-macos-11-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: x86_64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-668-github-verify-rc-wheels-macos-11-amd64
+    commit: f2450f8fec194689deb433f433adfc82fb8d052f
+  verify-rc-wheels-macos-10.15-amd64: !Task
+    ci: github
+    template: verify-rc/github.macos.amd64.yml
+    artifacts: []
+    params:
+      github_runner: macos-10.15
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+  # The github hosted macos-11 runners are in preview only, but should be switched once they are generally available:
+  #   https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
+    branch: actions-668-github-verify-rc-wheels-macos-10.15-amd64
+    commit: 53470c608ceb8eebf0b917f21445bc7f23448dad
+  verify-rc-wheels-macos-11-arm64: !Task
+    ci: github
+    template: verify-rc/github.macos.arm64.yml
+    artifacts: []
+    params:
+      github_runner: self-hosted
+      arch_emulation: arm64
+      env:
+        TEST_DEFAULT: 0
+      artifact: wheels
+
+    branch: actions-668-github-verify-rc-wheels-macos-11-arm64
+    commit: c3fe6546c098fd57472a0dcd8c7a9b15a7264fec
+params:
+  release: 5.0.0
+  rc: '1'
+branch: actions-668
