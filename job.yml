@@ -1,0 +1,41 @@
+!Job
+target: !Target
+  head: 662f66f8ebdfb50dd05102d5b50b558d6f73969e
+  email: unknown
+  branch: hard-lto
+  remote: https://github.com/nealrichardson/arrow.git
+  version: 6.0.0.dev69
+  no_rc_version: 6.0.0.dev69
+  no_rc_semver_version: 6.0.0-dev69
+tasks:
+  test-r-rhub-debian-gcc-devel-lto-latest: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rhub
+      r_image: debian-gcc-devel-lto
+      r_tag: latest
+      with_arrow: 'FALSE'
+      flags: -e INSTALL_ARGS=--use-LTO
+
+    branch: actions-742-azure-test-r-rhub-debian-gcc-devel-lto-latest
+    commit: 7a5302850cf897ae7adff1d3f3a147d4add36b45
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+        -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-742-github-test-r-gcc-11
+    commit: 5d7417554b11e33a3f7fe247f2f1d5a48bc8a08d
+params: {}
+branch: actions-742
