@@ -1,0 +1,41 @@
+!Job
+target: !Target
+  head: a84fff95d6268ee2b9fc3f4de9ad293ccaa89913
+  email: unknown
+  branch: patch-1
+  remote: https://github.com/thisisnic/arrow.git
+  version: 6.0.0.dev119
+  no_rc_version: 6.0.0.dev119
+  no_rc_semver_version: 6.0.0-dev119
+tasks:
+  test-r-ubuntu-21.04: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+      image: ubuntu-r
+
+    branch: actions-750-github-test-r-ubuntu-21.04
+    commit: ed3c7daccd38d2c3c246964a5b5cdb807e8da130
+  test-r-gcc-11: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+        GCC_VERSION: 11
+      # S3 support is not buildable with gcc11 right now
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+        -e ARROW_S3=OFF
+      image: ubuntu-r-only-r
+
+    branch: actions-750-github-test-r-gcc-11
+    commit: e911b5d61f6b2cc3b9afd42416abda50e0daedb0
+params: {}
+branch: actions-750
