@@ -1,0 +1,83 @@
+!Job
+target: !Target
+  head: 6dff6621659b9c11d7dc85c697e29ef59ff19b40
+  email: unknown
+  branch: patch-1
+  remote: https://github.com/thisisnic/arrow.git
+  version: 6.0.0.dev131
+  no_rc_version: 6.0.0.dev131
+  no_rc_semver_version: 6.0.0-dev131
+tasks:
+  conda-linux-gcc-py36-cpu-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-6.0.0.dev131-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-6.0.0.dev131-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.6.____cpython
+      r_config: linux_64_r_base4.0
+    branch: actions-776-azure-conda-linux-gcc-py36-cpu-r40
+    commit: 9e9edb00d931ba6b5f7a71a564e1c9dc1b65fd49
+  conda-linux-gcc-py37-cpu-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.linux.yml
+    artifacts:
+    - arrow-cpp-6.0.0.dev131-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-6.0.0.dev131-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: linux_64_cuda_compiler_versionNonenumpy1.17python3.7.____cpython
+      r_config: linux_64_r_base4.1
+    branch: actions-776-azure-conda-linux-gcc-py37-cpu-r41
+    commit: 4c3f48e6fe8a7813886a465eb91c63287ff7daba
+  conda-osx-clang-py37-r41: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-6.0.0.dev131-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-6.0.0.dev131-py37(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.7.____cpython
+      r_config: osx_64_r_base4.1
+    branch: actions-776-azure-conda-osx-clang-py37-r41
+    commit: af4efab9f0fa070a2f29a5b53d759bd18e43f5b9
+  conda-osx-clang-py36-r40: !Task
+    ci: azure
+    template: conda-recipes/azure.osx.yml
+    artifacts:
+    - arrow-cpp-6.0.0.dev131-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    - pyarrow-6.0.0.dev131-py36(h[a-z0-9]+)_0_cpu.tar.bz2
+    params:
+      config: osx_64_numpy1.17python3.6.____cpython
+      r_config: osx_64_r_base4.0
+    branch: actions-776-azure-conda-osx-clang-py36-r40
+    commit: 919765f08fac658f4014a2e65b5575a0ac05a36b
+  test-r-depsource-system: !Task
+    ci: github
+    template: docker-tests/github.linux.yml
+    artifacts: []
+    params:
+      env:
+        UBUNTU: 21.04
+        CLANG_TOOLS: 9 # can remove this when >=9 is the default
+      flags: -e ARROW_SOURCE_HOME="/arrow" -e FORCE_BUNDLED_BUILD=TRUE -e LIBARROW_BUILD=TRUE
+        -e ARROW_DEPENDENCY_SOURCE=SYSTEM
+      image: ubuntu-r-only-r
+
+
+    branch: actions-776-github-test-r-depsource-system
+    commit: 8989249231dd0fc3e1cadf4c50efe28f31eb951b
+  test-r-depsource-auto: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      flags: -e ARROW_DEPENDENCY_SOURCE=AUTO
+
+    branch: actions-776-azure-test-r-depsource-auto
+    commit: c95429bc109bc424eb00b873700caf543af07323
+params: {}
+branch: actions-776
