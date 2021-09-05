@@ -1,0 +1,39 @@
+!Job
+target: !Target
+  head: f33b2c19d2ffad97493a92de597ff7f1aad2cb63
+  email: unknown
+  branch: fix-nightlies
+  remote: https://github.com/nealrichardson/arrow.git
+  version: 6.0.0.dev191
+  no_rc_version: 6.0.0.dev191
+  no_rc_semver_version: 6.0.0-dev191
+tasks:
+  test-r-versions: !Task
+    ci: github
+    template: r/github.linux.versions.yml
+    artifacts: []
+    params:
+      MATRIX: ${{ matrix.r_version }}
+
+    branch: actions-819-github-test-r-versions
+    commit: c591ccfe6c8acdf9bd3973d0f4b1d7a6e15663ab
+  test-r-minimal-build: !Task
+    ci: azure
+    template: r/azure.linux.yml
+    artifacts: []
+    params:
+      r_org: rocker
+      r_image: r-base
+      r_tag: latest
+      arrow_dataset: OFF
+      arrow_parquet: OFF
+      arrow_json: OFF
+      arrow_s3: OFF
+      arrow_with_re2: OFF
+      arrow_with_utf8proc: OFF
+      libarrow_minimal: 'TRUE'
+
+    branch: actions-819-azure-test-r-minimal-build
+    commit: 0bca4f5020cfd796b78286fafb349f79dfb439ea
+params: {}
+branch: actions-819
